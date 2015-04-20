@@ -24,8 +24,9 @@ function runGame(scale) {
 		tick: 0,
 		snake: {
 			pic: "https://i.imgur.com/CnZ7qW3.png",//"test.png",
-			direction: "w",
-			loc: [[5,5],[6,5],[7,5],[7,6]],
+			direction: "e",
+			turn: "e",
+			loc: [[3,1],[3,2],[3,3],[3,4]],
 		},
 		food: {
 			pic: "https://i.imgur.com/grps5vJ.png",//"test2.png",
@@ -49,15 +50,13 @@ function runGame(scale) {
 	function tick() {
 		var flag = 0;
 		var next_loc = [game.snake.loc[0][0], game.snake.loc[0][1]];
-		
-		if (game.snake.direction == "n") {
-			next_loc[1]--;
-		} else if (game.snake.direction == "s") {
-			next_loc[1]++;
-		} else if (game.snake.direction == "e") {
-			next_loc[0]++;
-		} else if (game.snake.direction == "w") {
-			next_loc[0]--;
+		game.snake.direction = game.snake.turn;
+		switch (game.snake.direction) {
+			case "n":	next_loc[1]--;	break;
+			case "s":	next_loc[1]++;	break;
+			case "e":	next_loc[0]++;	break;
+			case "w":	next_loc[0]--;	break;
+			default: break;
 		}
 		console.log(game.snake.direction+" moving towards "+next_loc);
 		
@@ -73,18 +72,21 @@ function runGame(scale) {
 			}
 		}
 		
+		game.snake.loc.unshift(next_loc);
 		if ((next_loc[0] === game.food.loc[0])&&(next_loc[1] === game.food.loc[1])) {
-			game.score++;
 			game.context.clearRect(next_loc[0]*game.px, next_loc[1]*game.px, game.px, game.px);
+			game.context.drawImage(snake_pic, next_loc[0]*game.px, next_loc[1]*game.px, game.px, game.px);
+			
 			placeFood(game, food_pic);
+			
+			$("#score").text(++game.score);
 		} else {
+			game.context.drawImage(snake_pic, next_loc[0]*game.px, next_loc[1]*game.px, game.px, game.px);
+			
 			var tail = game.snake.loc.pop();
 			game.context.clearRect(tail[0]*game.px, tail[1]*game.px, game.px, game.px);
 		}
-		game.snake.loc.unshift(next_loc);
-		game.context.drawImage(snake_pic, next_loc[0]*game.px, next_loc[1]*game.px, game.px, game.px);
 		
-		//console.log(game.tick++, game.snake.loc, game.score);
 		return flag;
 	}
 	
@@ -98,31 +100,32 @@ function runGame(scale) {
 	}
 	
 	$(document).keydown( function(e) {
-		switch(e.which) {
+		
+		switch (e.which) {
 			case 38: // up
-			if (game.snake.direction != "s") {game.snake.direction = "n";}
+			if (game.snake.direction != "s") {game.snake.turn = "n";}
 			break;
 			case 37: // left
-			if (game.snake.direction != "e") {game.snake.direction = "w";}
+			if (game.snake.direction != "e") {game.snake.turn = "w";}
 			break;
 			case 40: // down
-			if (game.snake.direction != "n") {game.snake.direction = "s";}
+			if (game.snake.direction != "n") {game.snake.turn = "s";}
 			break;
 			case 39: // right
-			if (game.snake.direction != "w") {game.snake.direction = "e";}
+			if (game.snake.direction != "w") {game.snake.turn = "e";}
 			break;
 
 			case 87: // w
-			if (game.snake.direction != "s") {game.snake.direction = "n";}
+			if (game.snake.direction != "s") {game.snake.turn = "n";}
 			break;
 			case 65: // a
-			if (game.snake.direction != "e") {game.snake.direction = "w";}
+			if (game.snake.direction != "e") {game.snake.turn = "w";}
 			break;
 			case 83: // s
-			if (game.snake.direction != "n") {game.snake.direction = "s";}
+			if (game.snake.direction != "n") {game.snake.turn = "s";}
 			break;
 			case 68: // d
-			if (game.snake.direction != "w") {game.snake.direction = "e";}
+			if (game.snake.direction != "w") {game.snake.turn = "e";}
 			break;
 
 			default: return;
@@ -134,11 +137,11 @@ function runGame(scale) {
 		if (tick() < 0) {
 			clearInterval(game_timer);
 		}
-	}, 500);
+	}, 100);
 	
 }
 
 
 $(document).ready(function() {
-	runGame(10);
+	runGame(20);
 });
