@@ -106,29 +106,29 @@ function runGame(scale) {
 	$(document).keydown(function(e) {
 	switch(e.which) {
 		case 38: // up
-		game.snake.direction = "n";
+		if (game.snake.direction != "s") {game.snake.direction = "n";}
 		break;
 		case 37: // left
-		game.snake.direction = "w";
+		if (game.snake.direction != "e") {game.snake.direction = "w";}
 		break;
 		case 40: // down
-		game.snake.direction = "s";
+		if (game.snake.direction != "n") {game.snake.direction = "s";}
 		break;
 		case 39: // right
-		game.snake.direction = "e";
+		if (game.snake.direction != "w") {game.snake.direction = "e";}
 		break;
 
 		case 87: // w
-		game.snake.direction = "n";
+		if (game.snake.direction != "s") {game.snake.direction = "n";}
 		break;
 		case 65: // a
-		game.snake.direction = "w";
+		if (game.snake.direction != "e") {game.snake.direction = "w";}
 		break;
 		case 83: // s
-		game.snake.direction = "s";
+		if (game.snake.direction != "n") {game.snake.direction = "s";}
 		break;
 		case 68: // d
-		game.snake.direction = "e";
+		if (game.snake.direction != "w") {game.snake.direction = "e";}
 		break;
 
 		default: return;
