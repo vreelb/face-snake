@@ -1,12 +1,11 @@
-function getRandomLocation(pixel_size, blacklist) {	
-	var x = Math.floor(Math.random() * ($("#game-canvas").width()/pixel_size) );
-	var y = Math.floor(Math.random() * ($("#game-canvas").height()/pixel_size) );
-	
-	var x_y = [x, y];
-	//console.log(x_y);
+function getRandomLocation(pixel_size, blacklist) {
+	var x_y = [
+		Math.floor(Math.random() * ($("#game-canvas").width()/pixel_size) ),
+		Math.floor(Math.random() * ($("#game-canvas").height()/pixel_size) ),
+	];
 	
 	for (nongrata of blacklist) {
-		if ((x === nongrata[0])&&(y === nongrata[1])) {
+		if ((x_y[0] === nongrata[0])&&(x_y[1] === nongrata[1])) {
 			x_y = getRandomLocation(pixel_size, blacklist); // recursively get a free space
 			break;
 		}
@@ -16,11 +15,11 @@ function getRandomLocation(pixel_size, blacklist) {
 }
 
 function runGame(scale) {
-	var game_canvas = document.getElementById("game-canvas");
-	
 	var game = {
-		context: game_canvas.getContext("2d"),
+		context: document.getElementById("game-canvas").getContext("2d"),
 		px: $("#game-canvas").width()/scale, // game pixel size
+		width: 1, // scaled width
+		height: 1, //scaled height
 		score: 0,
 		tick: 0,
 		snake: {
@@ -33,6 +32,8 @@ function runGame(scale) {
 			loc: [],
 		},
 	};
+	game.width = $("#game-canvas").width()/game.px;
+	game.height = $("#game-canvas").height()/game.px;
 	
 	var snake_pic = new Image();
 	snake_pic.src = game.snake.pic;
@@ -60,7 +61,7 @@ function runGame(scale) {
 		}
 		console.log(game.snake.direction+" moving towards "+next_loc);
 		
-		if ((next_loc[0] < 0)||(next_loc[1] < 0)) { // does it hit a wall?
+		if ((next_loc[0] < 0)||(next_loc[1] < 0)||(next_loc[0] === game.width)||(next_loc[1] === game.height)) { // does it hit a wall?
 			console.log("LOSS: snake hit wall\nSCORE: "+ game.score);
 			return -1;
 		} else {
