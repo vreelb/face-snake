@@ -17,7 +17,7 @@ function getRandomLocation(pixel_size, blacklist) {
 
 function drawGame(game) {
 	var px = game.pixel_size;
-	game.context.clearRect(0, 0, $("#game-canvas").width(), $("#game-canvas").height());
+	//game.context.clearRect(0, 0, $("#game-canvas").width(), $("#game-canvas").height());
 	
 	var snake_pic = new Image();
 	snake_pic.src = game.snake.pic;
@@ -40,10 +40,6 @@ function drawGame(game) {
 
 function tick(game) {
 	var flag = 0;
-	//test for next location
-		//if wall or snake, dead
-		//if empty or food, move snake
-			//if food, increase score and find new food location
 	var next_loc = [game.snake.loc[0][0], game.snake.loc[0][1]];
 	
 	if (game.snake.direction == "n") {
@@ -74,9 +70,12 @@ function tick(game) {
 	if ((next_loc[0] === game.food.loc[0])&&(next_loc[1] === game.food.loc[1])) {
 		game.score++;
 		
+		game.context.clearRect(next_loc[0]*game.pixel_size, next_loc[1]*game.pixel_size, game.pixel_size, game.pixel_size);
+		
 		game.food.loc = getRandomLocation(game.pixel_size, game.snake.loc);
 	} else {
-		game.snake.loc.pop();
+		var tail = game.snake.loc.pop();
+		game.context.clearRect(tail[0]*game.pixel_size, tail[1]*game.pixel_size, game.pixel_size, game.pixel_size);
 	}
 	
 	//console.log(game.tick++, game.snake.loc, game.score);
@@ -142,7 +141,7 @@ function runGame(scale) {
 			clearInterval(game_timer);
 		}
 		drawGame(game);
-	}, 1000);
+	}, 500);
 	
 }
 
