@@ -14,7 +14,7 @@ function getRandomLocation(pixel_size, blacklist) {
 	return x_y;
 }
 
-function runGame(scale) {
+function runGame(scale, speed, snake_url, food_url) {
 	var game = {
 		context: document.getElementById("game-canvas").getContext("2d"),
 		px: $("#game-canvas").width()/scale, // game pixel size
@@ -23,13 +23,13 @@ function runGame(scale) {
 		score: 0,
 		tick: 0,
 		snake: {
-			pic: "https://i.imgur.com/CnZ7qW3.png",//"test.png",
+			pic: snake_url,//"https://i.imgur.com/CnZ7qW3.png",
 			direction: "e",
 			turn: "e",
 			loc: [[3,1],[3,2],[3,3],[3,4]],
 		},
 		food: {
-			pic: "https://i.imgur.com/grps5vJ.png",//"test2.png",
+			pic: food_url,//"https://i.imgur.com/grps5vJ.png",
 			loc: [],
 		},
 	};
@@ -43,7 +43,6 @@ function runGame(scale) {
 	
 	function placeFood() {
 		game.food.loc = getRandomLocation(game.px, game.snake.loc);
-		
 		game.context.drawImage(food_pic, game.food.loc[0]*game.px, game.food.loc[1]*game.px, game.px, game.px);
 	}
 	
@@ -93,14 +92,21 @@ function runGame(scale) {
 	food_pic.onload = function() {
 		placeFood();
 	}
+	food_pic.onerror = function() {
+		console.log("Error with food image, using default.");
+		game.food.pic = food_pic.src = "https://i.imgur.com/grps5vJ.png";
+	}
 	snake_pic.onload = function() {
 		for (var node of game.snake.loc) {
 			game.context.drawImage(snake_pic, node[0]*game.px, node[1]*game.px, game.px, game.px);
 		}
 	}
+	snake_pic.onerror = function() {
+		console.log("Error with snake image, using default.");
+		game.snake.pic = snake_pic.src = "https://i.imgur.com/CnZ7qW3.png";
+	}
 	
 	$(document).keydown( function(e) {
-		
 		switch (e.which) {
 			case 38: // up
 			if (game.snake.direction != "s") {game.snake.turn = "n";}
@@ -137,11 +143,12 @@ function runGame(scale) {
 		if (tick() < 0) {
 			clearInterval(game_timer);
 		}
-	}, 100);
+	}, speed);
 	
 }
 
 
 $(document).ready(function() {
-	runGame(20);
+	
+	runGame(20, 100, "wre","wer");// "https://i.imgur.com/CnZ7qW3.png", "https://i.imgur.com/grps5vJ.png");
 });

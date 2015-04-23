@@ -1,5 +1,17 @@
 body {
 	text-align: center;
+	margin: 0;
+	padding: 0;
+}
+
+#options-overlay {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	
+	background-color: rgba(0,0,0,0.2);
+	margin: 0;
+	padding: 0;
 }
 
 #game-canvas {
