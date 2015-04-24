@@ -144,6 +144,9 @@ function runGame(scale, speed, snake_url, food_url) {
 	var game_timer = setInterval( function() {
 		if (tick() < 0) {
 			clearInterval(game_timer);
+			$("#overlay-message").text("Game Over");
+			$("#overlay-score").text("Score: "+game.score);			
+			$("#options-overlay").show();
 		}
 	}, speed);
 	

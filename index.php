@@ -45,7 +45,8 @@ if (count($_GET)) {
 ?>
 	<div id="options-overlay">
 		<h1>
-			<span id="message">New Game</span>
+			<span id="overlay-message">New Game</span><br>
+			<span id="overlay-score"></span>
 		</h1>
 		<form action="index.php">
 			<input type="text" name="scale" value="<?= $scale ?>">
