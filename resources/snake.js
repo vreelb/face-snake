@@ -68,7 +68,7 @@ function runGame(scale, speed, snake_url, food_url) {
 			for (nongrata of game.snake.loc) {		// does it hit itself?
 				if ((next_loc[0] === nongrata[0])&&(next_loc[1] === nongrata[1])) {
 					console.log("LOSS: snake hit itself\nSCORE: "+ game.score);
-					return -1;
+					return -2;
 				}
 			}
 		}
@@ -142,16 +142,22 @@ function runGame(scale, speed, snake_url, food_url) {
 	});
 	
 	var game_timer = setInterval( function() {
-		if (tick() < 0) {
+		var status = tick();
+		if (status < 0) {
 			clearInterval(game_timer);
+			
 			$("#overlay-message").text("Game Over");
-			$("#overlay-score").text("Score: "+game.score);			
+			if (status === -1) {
+				$("#overlay-message").append("<br>You ran into a wall.<br>");
+			} else if (status === -2) {
+				$("#overlay-message").append("<br>You ran into yourself.<br>");
+			}
+			$("#overlay-score").text("Score: "+game.score);
 			$("#options-overlay").show();
 		}
 	}, speed);
 	
 }
-
 
 $(document).ready(function() {
 	

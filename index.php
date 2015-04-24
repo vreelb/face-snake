@@ -45,7 +45,7 @@ if (count($_GET)) {
 ?>
 	<div id="options-overlay">
 		<h1>
-			<span id="overlay-message">New Game</span><br>
+			<div id="overlay-message">New Game</div><br>
 			<span id="overlay-score"></span>
 		</h1>
 		<form action="index.php">
