@@ -15,6 +15,8 @@ function getRandomLocation(pixel_size, blacklist) {
 }
 
 function runGame(scale, speed, snake_url, food_url) {
+	$("#options-overlay").hide();
+	
 	var game = {
 		context: document.getElementById("game-canvas").getContext("2d"),
 		px: $("#game-canvas").width()/scale, // game pixel size
@@ -23,13 +25,13 @@ function runGame(scale, speed, snake_url, food_url) {
 		score: 0,
 		tick: 0,
 		snake: {
-			pic: snake_url,//"https://i.imgur.com/CnZ7qW3.png",
+			pic: decodeURI(snake_url),
 			direction: "e",
 			turn: "e",
 			loc: [[3,1],[3,2],[3,3],[3,4]],
 		},
 		food: {
-			pic: food_url,//"https://i.imgur.com/grps5vJ.png",
+			pic: decodeURI(food_url),
 			loc: [],
 		},
 	};
@@ -150,5 +152,4 @@ function runGame(scale, speed, snake_url, food_url) {
 
 $(document).ready(function() {
 	
-	runGame(20, 100, "wre","wer");// "https://i.imgur.com/CnZ7qW3.png", "https://i.imgur.com/grps5vJ.png");
 });
