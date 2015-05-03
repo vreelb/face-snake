@@ -49,12 +49,12 @@ if (count($_GET)) {
 			<span id="overlay-score"></span>
 		</h1>
 		<form action="index.php">
-			<input type="text" name="scale" value="<?= $scale ?>">
-			<input type="text" name="speed" value="<?= $speed ?>">
-			<input type="text" name="snake_url" value="<?= $snake_url ?>">
-			<input type="text" name="food_url" value="<?= $food_url ?>">
+			<label>Scale: <input type="text" name="scale" value="<?= $scale ?>"></label>
+			<label>Speed: <input type="text" name="speed" value="<?= $speed ?>"></label>
+			<label>Snake Picture: <input type="text" name="snake_url" value="<?= $snake_url ?>"></label>
+			<label>Food Picture: <input type="text" name="food_url" value="<?= $food_url ?>"></label>
 			
-			<input type="submit" value="Begin">
+			<label><input type="submit" value="Begin"></label>
 		</form>
 	</div>
 	<canvas id="game-canvas" width="600" height="600"></canvas>
