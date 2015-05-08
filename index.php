@@ -13,7 +13,9 @@
 </head>
 <body>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="https://apis.google.com/js/client.js"></script>
 	<script src="./resources/snake.js"></script>
+	<script src="./resources/config.js"></script>
 
 <?php
 
@@ -48,14 +50,20 @@ if (count($_GET)) {
 			<div id="overlay-message">New Game</div><br>
 			<span id="overlay-score"></span>
 		</h1>
+		<form>
+			<input type="text" id="short_url"><br>
+			<button type="button" onclick="getShortURL(window.location.href 
+);">Get Short URL</button>
+		</form>
+		<br>
 		<form action="index.php">
 			<label>Scale: <input type="text" name="scale" value="<?= $scale ?>"></label>
 			<label>Speed: <input type="text" name="speed" value="<?= $speed ?>"></label>
 			<label>Snake Picture: <input type="text" name="snake_url" value="<?= $snake_url ?>"></label>
 			<label>Food Picture: <input type="text" name="food_url" value="<?= $food_url ?>"></label>
-			
-			<label><input type="submit" value="Begin"></label>
+			<label><input type="submit" value="Begin New Game"></label>
 		</form>
+		
 	</div>
 	<canvas id="game-canvas" width="600" height="600"></canvas>
 	

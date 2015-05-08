@@ -159,6 +159,27 @@ function runGame(scale, speed, snake_url, food_url) {
 	
 }
 
+function getShortURL(long_url) {
+	var apiKey = api.key || '';
+	gapi.client.setApiKey(apiKey);
+
+	gapi.client.load('urlshortener', 'v1', function() {
+		var request = gapi.client.urlshortener.url.insert({
+			'resource': {
+				'longUrl': long_url
+			}
+		});
+		var response = request.execute( function(response) {
+			if (response.error) {
+				console.log('Error. ' + response.error.message);
+			} else {
+				$("#short_url").val(response.id);
+				$('#short_url').select().focus();
+			}
+		});
+	});
+}
+
 $(document).ready(function() {
 	
 });
