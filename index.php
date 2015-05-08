@@ -50,8 +50,8 @@ if (count($_GET)) {
 			<div id="overlay-message">New Game</div><br>
 			<span id="overlay-score"></span>
 		</h1>
-		<form>
-			<input type="text" id="short_url"><br>
+		<form id="url">
+			<input type="text" id="short-url"><br>
 			<button type="button" onclick="getShortURL(window.location.href 
 );">Get Short URL</button>
 		</form>

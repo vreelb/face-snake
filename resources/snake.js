@@ -160,9 +160,7 @@ function runGame(scale, speed, snake_url, food_url) {
 }
 
 function getShortURL(long_url) {
-	var apiKey = api.key || '';
-	gapi.client.setApiKey(apiKey);
-
+	gapi.client.setApiKey(api.key);
 	gapi.client.load('urlshortener', 'v1', function() {
 		var request = gapi.client.urlshortener.url.insert({
 			'resource': {
@@ -173,13 +171,15 @@ function getShortURL(long_url) {
 			if (response.error) {
 				console.log('Error. ' + response.error.message);
 			} else {
-				$("#short_url").val(response.id);
-				$('#short_url').select().focus();
+				$("#short-url").val(response.id);
+				$('#short-url').select().focus();
 			}
 		});
 	});
 }
 
 $(document).ready(function() {
-	
+	if (typeof api === 'undefined') {
+		$('#url').hide();
+	}
 });
