@@ -34,17 +34,23 @@ default_val($scale, 20);
 default_val($speed, 100);
 default_val($snake_url, "https://i.imgur.com/CnZ7qW3.png");
 default_val($food_url, "https://i.imgur.com/grps5vJ.png");
-
-if (count($_GET)) {
 ?>
 	<script>
-		$(document).ready(function() {
-			runGame("<?= $scale ?>", "<?= $speed ?>", "<?= $snake_url ?>", "<?= $food_url ?>");
-		});
-	</script>
+		var ops = {};
+		ops.scale = "<?= $scale ?>";
+		ops.speed = "<?= $speed ?>";
+		ops.snake_url = "<?= $snake_url ?>";
+		ops.food_url = "<?= $food_url ?>";
 <?php
-}
+		if (count($_GET)) {
 ?>
+			$(document).ready(function() {
+				runGame(ops);
+			});
+<?php
+		}
+?>
+	</script>
 	<div id="options-overlay">
 		<h1>
 			<div id="overlay-message">New Game</div><br>
@@ -56,12 +62,12 @@ if (count($_GET)) {
 );">Get Short URL</button>
 		</form>
 		<br>
-		<form action="index.php">
-			<label>Scale: <input type="text" name="scale" value="<?= $scale ?>"></label>
-			<label>Speed: <input type="text" name="speed" value="<?= $speed ?>"></label>
-			<label>Snake Picture: <input type="text" name="snake_url" value="<?= $snake_url ?>"></label>
-			<label>Food Picture: <input type="text" name="food_url" value="<?= $food_url ?>"></label>
-			<label><input type="submit" value="Begin New Game"></label>
+		<form id= "new-game">
+			<label>Scale: <input type="text" id="scale" name="scale" value="<?= $scale ?>"></label>
+			<label>Speed: <input type="text" id="speed" name="speed" value="<?= $speed ?>"></label>
+			<label>Snake Picture: <input type="text" id="snake_url" name="snake_url" value="<?= $snake_url ?>"></label>
+			<label>Food Picture: <input type="text" id="food_url" name="food_url" value="<?= $food_url ?>"></label>
+			<label><input type="button" value="Begin New Game" onclick="softSubmit(ops);"></label>
 		</form>
 		
 	</div>

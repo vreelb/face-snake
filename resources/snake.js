@@ -14,24 +14,24 @@ function getRandomLocation(pixel_size, blacklist) {
 	return x_y;
 }
 
-function runGame(scale, speed, snake_url, food_url) {
+function runGame(ops) {
 	$("#options-overlay").hide();
 	
 	var game = {
 		context: document.getElementById("game-canvas").getContext("2d"),
-		px: $("#game-canvas").width()/scale, // game pixel size
+		px: $("#game-canvas").width()/ops.scale, // game pixel size
 		width: 1, // scaled width
 		height: 1, //scaled height
 		score: 0,
 		tick: 0,
 		snake: {
-			pic: decodeURI(snake_url),
+			pic: decodeURI(ops.snake_url),
 			direction: "e",
 			turn: "e",
 			loc: [[3,1],[3,2],[3,3],[3,4]],
 		},
 		food: {
-			pic: decodeURI(food_url),
+			pic: decodeURI(ops.food_url),
 			loc: [],
 		},
 	};
@@ -42,6 +42,8 @@ function runGame(scale, speed, snake_url, food_url) {
 	snake_pic.src = game.snake.pic;
 	var food_pic = new Image();
 	food_pic.src = game.food.pic;
+	
+	game.context.clearRect(0 , 0, $("#game-canvas").width(), $("#game-canvas").height());
 	
 	function placeFood() {
 		game.food.loc = getRandomLocation(game.px, game.snake.loc);
@@ -59,7 +61,7 @@ function runGame(scale, speed, snake_url, food_url) {
 			case "w":	next_loc[0]--;	break;
 			default: break;
 		}
-		console.log(game.snake.direction+" moving towards "+next_loc);
+		//console.log(game.snake.direction+" moving towards "+next_loc);
 		
 		if ((next_loc[0] < 0)||(next_loc[1] < 0)||(next_loc[0] === game.width)||(next_loc[1] === game.height)) { // does it hit a wall?
 			console.log("LOSS: snake hit wall\nSCORE: "+ game.score);
@@ -155,7 +157,7 @@ function runGame(scale, speed, snake_url, food_url) {
 			$("#overlay-score").text("Score: "+game.score);
 			$("#options-overlay").show();
 		}
-	}, speed);
+	}, ops.speed);
 	
 }
 
@@ -171,15 +173,28 @@ function getShortURL(long_url) {
 			if (response.error) {
 				console.log('Error. ' + response.error.message);
 			} else {
-				$("#short-url").val(response.id);
+				$('#short-url').val(response.id);
 				$('#short-url').select().focus();
 			}
 		});
 	});
 }
 
+function softSubmit(ops) {
+	if ( (ops.scale === $("#scale").val()) && (ops.speed === $("#speed").val()) && (ops.snake_url === $("#snake_url").val()) && (ops.food_url === $("#food_url").val()) ) {
+		console.log("No options changed, starting game with current options.");
+		runGame(ops);
+	} else {
+		$("#new-game").submit();
+	}
+}
+
 $(document).ready(function() {
 	if (typeof api === 'undefined') {
 		$('#url').hide();
 	}
+	
+	$("input[type='text']").on("click", function () {
+		$(this).select();
+	});
 });
