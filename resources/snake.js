@@ -21,7 +21,7 @@ function runGame(ops) {
 		context: document.getElementById("game-canvas").getContext("2d"),
 		px: $("#game-canvas").width()/ops.scale, // game pixel size
 		width: 1, // scaled width
-		height: 1, //scaled height
+		height: 1, // scaled height
 		score: 0,
 		tick: 0,
 		snake: {
@@ -44,6 +44,7 @@ function runGame(ops) {
 	food_pic.src = game.food.pic;
 	
 	game.context.clearRect(0 , 0, $("#game-canvas").width(), $("#game-canvas").height());
+	$("#score").text("0");
 	
 	function placeFood() {
 		game.food.loc = getRandomLocation(game.px, game.snake.loc);
@@ -173,8 +174,7 @@ function getShortURL(long_url) {
 			if (response.error) {
 				console.log('Error. ' + response.error.message);
 			} else {
-				$('#short-url').val(response.id);
-				$('#short-url').select().focus();
+				$('#short-url').val(response.id).select().focus();
 			}
 		});
 	});
