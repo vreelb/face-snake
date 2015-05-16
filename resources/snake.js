@@ -6,7 +6,7 @@ function getRandomLocation(pixel_size, blacklist) {
 	
 	for (nongrata of blacklist) {
 		if ((x_y[0] === nongrata[0])&&(x_y[1] === nongrata[1])) {
-			x_y = getRandomLocation(pixel_size, blacklist); // recursively get a free space
+			x_y = getRandomLocation(pixel_size, blacklist); // recursively look for a free space
 			break;
 		}
 	}
@@ -17,11 +17,12 @@ function getRandomLocation(pixel_size, blacklist) {
 function runGame(ops) {
 	$("#options-overlay").hide();
 	
+	var px = $("#game-canvas").width()/ops.scale; // game pixel size
 	var game = {
 		context: document.getElementById("game-canvas").getContext("2d"),
-		px: $("#game-canvas").width()/ops.scale, // game pixel size
-		width: 1, // scaled width
-		height: 1, // scaled height
+		px: px,
+		width: $("#game-canvas").width()/px, // scaled width
+		height: $("#game-canvas").height()/px, // scaled height
 		score: 0,
 		tick: 0,
 		snake: {
@@ -35,8 +36,6 @@ function runGame(ops) {
 			loc: [],
 		},
 	};
-	game.width = $("#game-canvas").width()/game.px;
-	game.height = $("#game-canvas").height()/game.px;
 	
 	var snake_pic = new Image();
 	snake_pic.src = game.snake.pic;
@@ -114,31 +113,21 @@ function runGame(ops) {
 	$(document).keydown( function(e) {
 		switch (e.which) {
 			case 38: // up
-			if (game.snake.direction != "s") {game.snake.turn = "n";}
-			break;
-			case 37: // left
-			if (game.snake.direction != "e") {game.snake.turn = "w";}
-			break;
-			case 40: // down
-			if (game.snake.direction != "n") {game.snake.turn = "s";}
-			break;
-			case 39: // right
-			if (game.snake.direction != "w") {game.snake.turn = "e";}
-			break;
-
 			case 87: // w
-			if (game.snake.direction != "s") {game.snake.turn = "n";}
-			break;
+				if (game.snake.direction != "s") {game.snake.turn = "n";}
+				break;
+			case 37: // left
 			case 65: // a
-			if (game.snake.direction != "e") {game.snake.turn = "w";}
-			break;
+				if (game.snake.direction != "e") {game.snake.turn = "w";}
+				break;
+			case 40: // down
 			case 83: // s
-			if (game.snake.direction != "n") {game.snake.turn = "s";}
-			break;
+				if (game.snake.direction != "n") {game.snake.turn = "s";}
+				break;
+			case 39: // right
 			case 68: // d
-			if (game.snake.direction != "w") {game.snake.turn = "e";}
-			break;
-
+				if (game.snake.direction != "w") {game.snake.turn = "e";}
+				break;
 			default: return;
 		}
 		e.preventDefault();
