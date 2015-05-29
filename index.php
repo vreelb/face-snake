@@ -12,20 +12,21 @@
 
 </head>
 <body>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.4/hammer.min.js"></script>
 	<script src="https://apis.google.com/js/client.js"></script>
 	<script src="./resources/snake.js"></script>
 	<script src="./resources/config.js"></script>
 
 <?php
 
-$scale = @$_GET["scale"];
-$speed = @$_GET["speed"];
-$snake_url = @$_GET["snake_url"];
-$food_url = @$_GET["food_url"];
+$scale = @addslashes($_GET["scale"]);
+$speed = @addslashes($_GET["speed"]);
+$snake_url = @addslashes($_GET["snake_url"]);
+$food_url = @addslashes($_GET["food_url"]);
 
 function default_val(&$var, $default) {
-	if (empty($var)) {
+	if (empty($var) || (intval($default)&&(!intval($var)||(intval($var)<=0)))) {
 		$var = $default;
 	}
 }
