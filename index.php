@@ -32,7 +32,7 @@ function default_val(&$var, $default) {
 }
 
 default_val($scale, 20);
-default_val($speed, 100);
+default_val($speed, intval($scale/2));
 default_val($snake_url, "https://i.imgur.com/CnZ7qW3.png");
 default_val($food_url, "https://i.imgur.com/grps5vJ.png");
 ?>
@@ -64,8 +64,8 @@ default_val($food_url, "https://i.imgur.com/grps5vJ.png");
 		</form>
 		<br>
 		<form id= "new-game">
-			<label>Scale: <input type="text" id="scale" name="scale" value="<?= $scale ?>"></label>
-			<label>Speed: <input type="text" id="speed" name="speed" value="<?= $speed ?>"></label>
+			<label>Size: <input type="range" id="scale" name="scale" min="10" max="40" value="<?= $scale ?>"></label>
+			<label>Speed: <input type="range" id="speed" name="speed" min="5" max="20" value="<?= $speed ?>"></label>
 			<label>Snake Picture: <input type="text" id="snake_url" name="snake_url" value="<?= $snake_url ?>"></label>
 			<label>Food Picture: <input type="text" id="food_url" name="food_url" value="<?= $food_url ?>"></label>
 			<label><input type="button" value="Begin New Game" onclick="softSubmit(ops);"></label>

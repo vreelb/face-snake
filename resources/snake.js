@@ -147,7 +147,7 @@ function runGame(ops) {
 			$("#overlay-score").text("Score: "+game.score);
 			$("#options-overlay").show();
 		}
-	}, ops.speed);
+	}, 1000/ops.speed);
 	
 }
 
@@ -178,12 +178,16 @@ function softSubmit(ops) {
 	}
 }
 
-$(document).ready(function() {
+$(document).ready( function() {
 	if (typeof api === 'undefined') {
 		$('#url').hide();
 	}
 	
 	$("input[type='text']").on("click", function () {
 		$(this).select();
+	});
+	
+	$("#scale").change( function() {
+		$("#speed").val( parseInt($("#scale").val()/2) );
 	});
 });
