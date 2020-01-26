@@ -12,18 +12,15 @@
 
 </head>
 <body>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.4/hammer.min.js"></script>
-	<script src="https://apis.google.com/js/client.js"></script>
 	<script src="./resources/snake.js"></script>
-	<script src="./resources/config.js"></script>
-
 <?php
 
-$scale = @addslashes($_GET["scale"]);
-$speed = @addslashes($_GET["speed"]);
-$snake_url = @addslashes($_GET["snake_url"]);
-$food_url = @addslashes($_GET["food_url"]);
+$scale = filter_input(INPUT_GET, "scale", FILTER_VALIDATE_INT);
+$speed = filter_input(INPUT_GET, "speed", FILTER_VALIDATE_INT);
+$snake_url = filter_input(INPUT_GET, "snake_url", FILTER_VALIDATE_URL);
+$food_url = filter_input(INPUT_GET, "food_url", FILTER_VALIDATE_URL);
 
 function default_val(&$var, $default) {
 	if (empty($var) || (intval($default)&&(!intval($var)||(intval($var)<=0)))) {
@@ -33,8 +30,9 @@ function default_val(&$var, $default) {
 
 default_val($scale, 20);
 default_val($speed, intval($scale/2));
-default_val($snake_url, "https://i.imgur.com/CnZ7qW3.png");
-default_val($food_url, "https://i.imgur.com/grps5vJ.png");
+default_val($snake_url, "https://emojis.slackmojis.com/emojis/images/1563480763/5999/meow_party.gif");
+default_val($food_url, "https://emojis.slackmojis.com/emojis/images/1457563042/312/doge.png");
+
 ?>
 	<script>
 		var ops = {};
@@ -57,11 +55,6 @@ default_val($food_url, "https://i.imgur.com/grps5vJ.png");
 			<div id="overlay-message">New Game</div><br>
 			<span id="overlay-score"></span>
 		</h1>
-		<form id="url">
-			<input type="text" id="short-url"><br>
-			<button type="button" onclick="getShortURL(window.location.href 
-);">Get Short URL</button>
-		</form>
 		<br>
 		<form id= "new-game">
 			<label>Size: <input type="range" id="scale" name="scale" min="10" max="40" value="<?= $scale ?>"></label>
@@ -70,11 +63,11 @@ default_val($food_url, "https://i.imgur.com/grps5vJ.png");
 			<label>Food Picture: <input type="text" id="food_url" name="food_url" value="<?= $food_url ?>"></label>
 			<label><input type="button" value="Begin New Game" onclick="softSubmit(ops);"></label>
 		</form>
-		
+
 	</div>
 	<canvas id="game-canvas" width="600" height="600"></canvas>
-	
+
 	<h2>Score: <span id="score">0<span></h2>
-	
+
 </body>
 </html>

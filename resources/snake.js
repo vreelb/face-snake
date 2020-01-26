@@ -3,20 +3,20 @@ function getRandomLocation(pixel_size, blacklist) {
 		Math.floor(Math.random() * ($("#game-canvas").width()/pixel_size) ),
 		Math.floor(Math.random() * ($("#game-canvas").height()/pixel_size) ),
 	];
-	
+
 	for (nongrata of blacklist) {
 		if ((x_y[0] === nongrata[0])&&(x_y[1] === nongrata[1])) {
 			x_y = getRandomLocation(pixel_size, blacklist); // recursively look for a free space
 			break;
 		}
 	}
-	
+
 	return x_y;
 }
 
 function runGame(ops) {
 	$("#options-overlay").hide();
-	
+
 	var px = $("#game-canvas").width()/ops.scale; // game pixel size
 	var game = {
 		context: document.getElementById("game-canvas").getContext("2d"),
@@ -36,20 +36,20 @@ function runGame(ops) {
 			loc: [],
 		},
 	};
-	
+
 	var snake_pic = new Image();
 	snake_pic.src = game.snake.pic;
 	var food_pic = new Image();
 	food_pic.src = game.food.pic;
-	
+
 	game.context.clearRect(0 , 0, $("#game-canvas").width(), $("#game-canvas").height());
 	$("#score").text("0");
-	
+
 	function placeFood() {
 		game.food.loc = getRandomLocation(game.px, game.snake.loc);
 		game.context.drawImage(food_pic, game.food.loc[0]*game.px, game.food.loc[1]*game.px, game.px, game.px);
 	}
-	
+
 	function tick() {
 		var flag = 0;
 		var next_loc = [game.snake.loc[0][0], game.snake.loc[0][1]];
@@ -61,8 +61,7 @@ function runGame(ops) {
 			case "w":	next_loc[0]--;	break;
 			default: break;
 		}
-		//console.log(game.snake.direction+" moving towards "+next_loc);
-		
+
 		if ((next_loc[0] < 0)||(next_loc[1] < 0)||(next_loc[0] === game.width)||(next_loc[1] === game.height)) { // does it hit a wall?
 			console.log("LOSS: snake hit wall\nSCORE: "+ game.score);
 			return -1;
@@ -74,31 +73,31 @@ function runGame(ops) {
 				}
 			}
 		}
-		
+
 		game.snake.loc.unshift(next_loc);
 		if ((next_loc[0] === game.food.loc[0])&&(next_loc[1] === game.food.loc[1])) {
 			game.context.clearRect(next_loc[0]*game.px, next_loc[1]*game.px, game.px, game.px);
 			game.context.drawImage(snake_pic, next_loc[0]*game.px, next_loc[1]*game.px, game.px, game.px);
-			
+
 			placeFood(game, food_pic);
-			
+
 			$("#score").text(++game.score);
 		} else {
 			game.context.drawImage(snake_pic, next_loc[0]*game.px, next_loc[1]*game.px, game.px, game.px);
-			
+
 			var tail = game.snake.loc.pop();
 			game.context.clearRect(tail[0]*game.px, tail[1]*game.px, game.px, game.px);
 		}
-		
+
 		return flag;
 	}
-	
+
 	food_pic.onload = function() {
 		placeFood();
 	}
 	food_pic.onerror = function() {
 		console.log("Error with food image, using default.");
-		game.food.pic = food_pic.src = "https://i.imgur.com/grps5vJ.png";
+		game.food.pic = food_pic.src = "https://emojis.slackmojis.com/emojis/images/1457563042/312/doge.png";
 	}
 	snake_pic.onload = function() {
 		for (var node of game.snake.loc) {
@@ -107,9 +106,9 @@ function runGame(ops) {
 	}
 	snake_pic.onerror = function() {
 		console.log("Error with snake image, using default.");
-		game.snake.pic = snake_pic.src = "https://i.imgur.com/CnZ7qW3.png";
+		game.snake.pic = snake_pic.src = "https://emojis.slackmojis.com/emojis/images/1563480763/5999/meow_party.gif";
 	}
-	
+
 	$(document).keydown( function(e) {
 		switch (e.which) {
 			case 38: // up
@@ -132,12 +131,12 @@ function runGame(ops) {
 		}
 		e.preventDefault();
 	});
-	
+
 	var game_timer = setInterval( function() {
 		var status = tick();
 		if (status < 0) {
 			clearInterval(game_timer);
-			
+
 			$("#overlay-message").text("Game Over");
 			if (status === -1) {
 				$("#overlay-message").append("<br>You ran into a wall.<br>");
@@ -148,25 +147,7 @@ function runGame(ops) {
 			$("#options-overlay").show();
 		}
 	}, 1000/ops.speed);
-	
-}
 
-function getShortURL(long_url) {
-	gapi.client.setApiKey(api.key);
-	gapi.client.load('urlshortener', 'v1', function() {
-		var request = gapi.client.urlshortener.url.insert({
-			'resource': {
-				'longUrl': long_url
-			}
-		});
-		var response = request.execute( function(response) {
-			if (response.error) {
-				console.log('Error. ' + response.error.message);
-			} else {
-				$('#short-url').val(response.id).select().focus();
-			}
-		});
-	});
 }
 
 function softSubmit(ops) {
@@ -182,11 +163,11 @@ $(document).ready( function() {
 	if (typeof api === 'undefined') {
 		$('#url').hide();
 	}
-	
+
 	$("input[type='text']").on("click", function () {
 		$(this).select();
 	});
-	
+
 	$("#scale").change( function() {
 		$("#speed").val( parseInt($("#scale").val()/2) );
 	});
